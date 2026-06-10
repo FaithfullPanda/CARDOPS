@@ -899,26 +899,21 @@ body {
   height:380px;
   border-radius:22px;
 
-  background:
-    linear-gradient(
-      145deg,
-      #1d2740,
-      #293858,
-      #121928
-    );
-
   border:2px solid rgba(255,255,255,.15);
-
-  box-shadow:
-    0 30px 80px rgba(0,0,0,.7),
-    0 0 50px rgba(126,184,247,.25);
 
   position:relative;
   overflow:hidden;
 
   cursor:pointer;
-
   transition:.35s;
+
+  background-size: 140%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.7),
+    0 0 50px var(--pack-glow, #7eb8f7);
 }
 
 .booster-pack:hover{
@@ -943,17 +938,17 @@ body {
 
 .booster-title{
   position:absolute;
-  top:40px;
+  top:180px;
   width:100%;
   text-align:center;
 
-  font-size:24px;
+  font-size:21px;
   font-weight:700;
 }
 
 .booster-sub{
   position:absolute;
-  bottom:30px;
+  bottom:120px;
   width:100%;
   text-align:center;
 
