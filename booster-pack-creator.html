@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CardOps Booster Pack Creator</title>
+<style>
+  :root {
+    --bg: #0d0d1a;
+    --surface: #131325;
+    --surface2: #1a1a30;
+    --surface3: #21213d;
+    --border: rgba(139,120,255,0.18);
+    --border2: rgba(139,120,255,0.35);
+    --purple: #7c6fee;
+    --purple-light: #a89bf5;
+    --purple-dim: rgba(124,111,238,0.15);
+    --text: #e8e6ff;
+    --text2: #9c98c8;
+    --text3: #5e5a80;
+    --danger: #e24b4a;
+    --danger-dim: rgba(226,75,74,0.12);
+    --success: #1d9e75;
+    --success-dim: rgba(29,158,117,0.12);
+    --amber: #ef9f27;
+    --amber-dim: rgba(239,159,39,0.12);
+    --red: #e24b4a;
+    --red-dim: rgba(226,75,74,0.1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 58px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    transition: border-color 0.15s;
+    user-select: none;
+    position: relative;
+  }
+  .header-icon:hover { border-color: var(--purple); }
+  .header-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 2px 6px;
+    background: transparent;
+    transition: border-color 0.15s;
+  }
+  .header-title:hover, .header-title:focus { border-color: var(--border2); background: var(--surface2); }
+  .header-actions { margin-left: auto; display: flex; gap: 8px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 7px; font-size: 13px; font-weight: 500;
+    cursor: pointer; border: 1px solid var(--border); background: var(--surface2);
+    color: var(--text); transition: all 0.15s; white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--border2); background: var(--surface3); }
+  .btn-primary {
+    background: var(--purple); border-color: var(--purple); color: #fff;
+  }
+  .btn-primary:hover { background: var(--purple-light); border-color: var(--purple-light); }
+  .btn-danger { color: var(--danger); border-color: rgba(226,75,74,0.3); }
+  .btn-danger:hover { background: var(--danger-dim); border-color: var(--danger); }
+  .btn svg, .btn span.ico { width: 15px; height: 15px; opacity: 0.8; }
+
+  /* LAYOUT */
+  .layout { display: grid; grid-template-columns: 300px 1fr; height: calc(100vh - 58px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .sidebar-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sidebar-header h2 { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; flex: 1; }
+  .badge-count {
+    background: var(--purple-dim); color: var(--purple-light);
+    font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 10px;
+  }
+  .card-list { flex: 1; overflow-y: auto; padding: 8px; }
+  .card-list::-webkit-scrollbar { width: 4px; }
+  .card-list::-webkit-scrollbar-track { background: transparent; }
+  .card-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .card-item {
+    padding: 10px 12px; border-radius: 8px; cursor: pointer;
+    border: 1px solid transparent; margin-bottom: 4px;
+    transition: all 0.12s; display: flex; align-items: flex-start; gap: 10px;
+  }
+  .card-item:hover { background: var(--surface2); border-color: var(--border); }
+  .card-item.active { background: var(--purple-dim); border-color: var(--border2); }
+  .card-item-icon {
+    width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; background: var(--surface3);
+    color: var(--text2);
+  }
+  .card-item-info { flex: 1; min-width: 0; }
+  .card-item-title { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-item-meta { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .type-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+  }
+
+  /* MAIN AREA */
+  .main { overflow-y: auto; padding: 24px; background: var(--bg); }
+  .main::-webkit-scrollbar { width: 4px; }
+  .main::-webkit-scrollbar-track { background: transparent; }
+  .main::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  /* DECK SETTINGS */
+  .section {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 20px; overflow: hidden;
+  }
+  .section-head {
+    padding: 14px 18px; display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer; user-select: none;
+  }
+  .section-head h3 { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+  .section-head .chevron { color: var(--text3); transition: transform 0.15s; font-size: 12px; }
+  .section-head.open .chevron { transform: rotate(90deg); }
+  .section-body { padding: 18px; display: none; }
+  .section-body.visible { display: block; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .form-full { grid-column: 1 / -1; }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.07em; }
+  .field input, .field select, .field textarea {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); border-radius: 7px; padding: 8px 10px;
+    font-size: 13px; font-family: inherit; outline: none;
+    transition: border-color 0.15s; width: 100%;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--purple);
+  }
+  .field textarea { resize: vertical; min-height: 70px; }
+  .field select { cursor: pointer; }
+  .field select option { background: var(--surface2); }
+  .field input[type="color"] {
+    padding: 3px 5px; height: 36px; cursor: pointer;
+  }
+
+  /* CARD EDITOR */
+  .card-editor-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
+  }
+  .card-editor-header h2 { font-size: 16px; font-weight: 600; }
+  .card-number { font-size: 12px; color: var(--text3); background: var(--surface2); padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border); }
+
+  /* TYPE BADGES */
+  .type-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 9px; border-radius: 5px; font-size: 11px; font-weight: 600;
+  }
+
+  /* TAGS */
+  .tags-input-wrap { display: flex; gap: 6px; }
+  .tags-input-wrap input { flex: 1; }
+  .tags-display { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; min-height: 20px; }
+  .tag-pill {
+    background: var(--purple-dim); color: var(--purple-light);
+    padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 4px;
+    border: 1px solid rgba(124,111,238,0.25);
+  }
+  .tag-pill button {
+    background: none; border: none; color: var(--text3); cursor: pointer;
+    padding: 0; font-size: 13px; line-height: 1; display: flex; align-items: center;
+  }
+  .tag-pill button:hover { color: var(--danger); }
+
+  /* EMPTY STATE */
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 20px; text-align: center; color: var(--text3);
+  }
+  .empty-state svg { margin-bottom: 16px; opacity: 0.3; }
+  .empty-state h3 { font-size: 15px; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+  .empty-state p { font-size: 13px; max-width: 240px; line-height: 1.6; }
+
+  /* PREVIEW PANE */
+  .preview-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; margin-top: 16px;
+  }
+  .preview-card .preview-title { font-size: 13px; color: var(--text3); margin-bottom: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+  .cmd-block {
+    background: #0a0a14; border: 1px solid var(--border);
+    border-radius: 7px; padding: 10px 14px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px; color: #c3b8ff; word-break: break-all;
+  }
+
+  /* IMPORT OVERLAY */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200; display: none;
+  }
+  .overlay.show { display: flex; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 14px; padding: 24px; width: 440px; max-width: 90vw;
+  }
+  .modal h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .modal p { font-size: 13px; color: var(--text2); margin-bottom: 14px; line-height: 1.5; }
+  .modal textarea {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); border-radius: 8px; padding: 10px; font-size: 12px;
+    font-family: monospace; resize: vertical; min-height: 140px; outline: none;
+  }
+  .modal textarea:focus { border-color: var(--purple); }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+
+  /* ICON PICKER */
+  .emoji-grid {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;
+    max-height: 180px; overflow-y: auto; margin-bottom: 10px;
+  }
+  .emoji-opt {
+    display: flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 7px; cursor: pointer; font-size: 18px;
+    border: 1px solid transparent; transition: all 0.1s; background: var(--surface2);
+  }
+  .emoji-opt:hover, .emoji-opt.selected { border-color: var(--purple); background: var(--purple-dim); }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 999;
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 9px; padding: 10px 16px; font-size: 13px;
+    display: flex; align-items: center; gap: 8px;
+    transform: translateY(60px); opacity: 0; transition: all 0.2s;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-color: rgba(29,158,117,0.5); }
+  .toast .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
+
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* ICON OVERLAY */
+  .icon-overlay {
+    position: absolute; top: 36px; left: 0; width: 240px;
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 10px; padding: 12px; z-index: 300; display: none;
+  }
+  .icon-overlay.show { display: block; }
+  .icon-overlay-title { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+  .icon-input { width: 100%; margin-bottom: 8px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 6px 8px; font-size: 13px; outline: none; }
+  .icon-input:focus { border-color: var(--purple); }
+
+  /* Glow accent for active nav */
+  .sidebar-deck-info {
+    padding: 14px 16px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .deck-icon-preview {
+    width: 36px; height: 36px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+    background: var(--surface3); border: 1px solid var(--border);
+  }
+  .deck-name-display { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .deck-card-count { font-size: 11px; color: var(--text3); }
+
+  .add-card-btn {
+    margin: 8px; padding: 9px;
+    border: 1px dashed var(--border2); border-radius: 8px;
+    background: none; color: var(--text3); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-size: 13px; font-weight: 500; transition: all 0.15s; width: calc(100% - 16px);
+  }
+  .add-card-btn:hover { border-color: var(--purple); color: var(--purple-light); background: var(--purple-dim); }
+
+  .no-select { display: flex; align-items: center; justify-content: center; height: 100%; flex-direction: column; gap: 12px; color: var(--text3); }
+  .no-select p { font-size: 13px; max-width: 200px; text-align: center; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-icon" id="iconBtn" title="Change icon">
+    <span id="iconDisplay">🐳</span>
+    <div class="icon-overlay" id="iconOverlay">
+      <div class="icon-overlay-title">Pack icon</div>
+      <input class="icon-input" id="customEmojiInput" placeholder="Paste any emoji…" maxlength="4">
+      <div class="emoji-grid" id="emojiGrid"></div>
+    </div>
+  </div>
+  <input class="header-title" id="packNameInput" value="Docker Essentials" spellcheck="false" maxlength="60">
+  <div class="header-actions">
+    <button class="btn" id="importBtn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10v3h12v-3M8 2v8M5 7l3 3 3-3"/></svg>
+      Import JSON
+    </button>
+    <button class="btn btn-primary" id="exportBtn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10v3h12v-3M8 10V2M5 5l3-3 3 3"/></svg>
+      Export JSON
+    </button>
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-deck-info">
+      <div class="deck-icon-preview" id="sidebarIconPreview">🚀</div>
+      <div>
+        <div class="deck-name-display" id="sidebarNameDisplay">Sample Deck</div>
+        <div class="deck-card-count" id="sidebarCardCount">1 card</div>
+      </div>
+    </div>
+    <div class="sidebar-header">
+      <h2>Cards</h2>
+      <span class="badge-count" id="cardCount">8</span>
+    </div>
+    <div class="card-list" id="cardList"></div>
+    <button class="add-card-btn" id="addCardBtn">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1v12M1 7h12"/></svg>
+      Add card
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="mainArea">
+    <!-- Deck Settings -->
+    <div class="section" id="deckSection">
+      <div class="section-head open" onclick="toggleSection(this)">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--purple-light)"><rect x="1" y="1" width="13" height="13" rx="3"/><path d="M5 7.5h5M7.5 5v5"/></svg>
+        <h3>Pack settings</h3>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="section-body visible" id="deckSettingsBody">
+        <div class="form-grid three">
+          <div class="field">
+            <label>Background color</label>
+            <input type="color" id="deckColor" value="#7eb8f7">
+          </div>
+          <div class="field">
+            <label>Card background</label>
+            <input type="color" id="deckCardBg" value="#1a2236">
+          </div>
+          <div class="field">
+            <label>Card accent</label>
+            <input type="color" id="deckCardAccent" value="#6ee7b7">
+          </div>
+        </div>
+        <div style="margin-top:12px; display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text2);">
+          <span>Preview swatch:</span>
+          <div id="colorSwatch" style="display:flex; gap:6px;">
+            <div id="sw1" style="width:22px;height:22px;border-radius:4px;background:#7eb8f7;border:1px solid var(--border);"></div>
+            <div id="sw2" style="width:22px;height:22px;border-radius:4px;background:#1a2236;border:1px solid var(--border);"></div>
+            <div id="sw3" style="width:22px;height:22px;border-radius:4px;background:#6ee7b7;border:1px solid var(--border);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card editor placeholder -->
+    <div id="cardEditorArea">
+      <div class="no-select" style="height:300px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" style="opacity:0.2; color:var(--purple-light)"><rect x="6" y="8" width="36" height="32" rx="6"/><path d="M14 20h20M14 27h14"/></svg>
+        <p>Select a card from the sidebar or add a new one to start editing.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="overlay" id="importOverlay">
+  <div class="modal">
+    <h3>Import JSON</h3>
+    <p>Paste an existing booster pack JSON to load it into the editor. This will replace the current pack.</p>
+    <textarea id="importTextarea" placeholder='{ "version": 1, "deck": {...}, "cards": [...] }'></textarea>
+    <div class="modal-footer">
+      <button class="btn" id="importCancelBtn">Cancel</button>
+      <button class="btn btn-primary" id="importConfirmBtn">Load pack</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastMsg">Exported!</span></div>
+
+<script>
+// ─── STATE ──────────────────────────────────────────────────────────────────
+const EMOJIS = ['🐳','🚀','⚡','🔥','🛡️','🗂️','🧩','💎','🌿','🔧','🎯','📦','🌊','🔑','🧪','✨','🦋','🐉','🎮','🌙','🏆','🎲','📡','💻','🛸','🧠','🔮','🌀','⚙️','🪄'];
+
+const TYPE_META = {
+  Standard:    { color: '#3c8ef7', bg: 'rgba(60,142,247,0.13)', label: '●' },
+  Elevated:    { color: '#9f7aea', bg: 'rgba(159,122,234,0.13)', label: '●' },
+  Dangerous:   { color: '#ef9f27', bg: 'rgba(239,159,39,0.13)',  label: '●' },
+  Destructive: { color: '#e24b4a', bg: 'rgba(226,75,74,0.13)',   label: '●' },
+};
+
+let state = {
+  icon: '🚀',
+  name: 'Sample Deck',
+  color: '#7eb8f7',
+  cardBg: '#1a2236',
+  cardAccent: '#6ee7b7',
+  cards: [],
+  activeCard: null,
+};
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+function init() {
+  loadSampleData();
+  buildEmojiGrid();
+  bindEvents();
+  render();
+}
+
+function loadSampleData() {
+  state.cards = [
+    { id: uid(), title: 'Sample Command', command: 'i am a hapycat', description: 'Display all currently happy cats.', type: 'Standard', tags: ['cats','hapy'] },
+  ];
+}
+
+function uid() { return Math.random().toString(36).slice(2,9); }
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function render() {
+  renderSidebar();
+  renderEditor();
+  updateHeader();
+  updateSwatches();
+}
+
+function updateHeader() {
+  document.getElementById('iconDisplay').textContent = state.icon;
+  document.getElementById('packNameInput').value = state.name;
+  document.getElementById('sidebarIconPreview').textContent = state.icon;
+  document.getElementById('sidebarNameDisplay').textContent = state.name;
+  document.getElementById('sidebarCardCount').textContent = state.cards.length + ' card' + (state.cards.length !== 1 ? 's' : '');
+  document.getElementById('cardCount').textContent = state.cards.length;
+  document.getElementById('deckColor').value = state.color;
+  document.getElementById('deckCardBg').value = state.cardBg;
+  document.getElementById('deckCardAccent').value = state.cardAccent;
+}
+
+function updateSwatches() {
+  document.getElementById('sw1').style.background = state.color;
+  document.getElementById('sw2').style.background = state.cardBg;
+  document.getElementById('sw3').style.background = state.cardAccent;
+}
+
+function renderSidebar() {
+  const list = document.getElementById('cardList');
+  list.innerHTML = '';
+  state.cards.forEach((card, i) => {
+    const m = TYPE_META[card.type] || TYPE_META.Standard;
+    const item = document.createElement('div');
+    item.className = 'card-item' + (state.activeCard === card.id ? ' active' : '');
+    item.dataset.id = card.id;
+    item.innerHTML = `
+      <div class="card-item-icon" style="background:${m.bg};color:${m.color};">${i+1}</div>
+      <div class="card-item-info">
+        <div class="card-item-title">${esc(card.title) || 'Untitled card'}</div>
+        <div class="card-item-meta">${esc(card.type)} · ${card.tags.length} tag${card.tags.length!==1?'s':''}</div>
+      </div>
+      <div class="type-dot" style="background:${m.color};"></div>
+    `;
+    item.addEventListener('click', () => { state.activeCard = card.id; render(); });
+    list.appendChild(item);
+  });
+}
+
+function renderEditor() {
+  const area = document.getElementById('cardEditorArea');
+  if (!state.activeCard) {
+    area.innerHTML = `<div class="no-select" style="height:300px;">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" style="opacity:0.2;color:var(--purple-light)"><rect x="6" y="8" width="36" height="32" rx="6"/><path d="M14 20h20M14 27h14"/></svg>
+      <p>Select a card from the sidebar or add a new one to start editing.</p>
+    </div>`;
+    return;
+  }
+  const card = state.cards.find(c => c.id === state.activeCard);
+  if (!card) return;
+  const idx = state.cards.indexOf(card);
+  const m = TYPE_META[card.type] || TYPE_META.Standard;
+
+  area.innerHTML = `
+    <div class="card-editor-header">
+      <h2>Edit card</h2>
+      <span class="card-number">Card ${idx+1} of ${state.cards.length}</span>
+      <span class="type-badge" style="background:${m.bg};color:${m.color};margin-left:auto;">${card.type}</span>
+      <button class="btn btn-danger" id="deleteCardBtn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 3h10M5 3V2h4v1M3 3l1 9h6l1-9"/></svg>
+        Delete
+      </button>
+    </div>
+
+    <div class="section">
+      <div class="section-body visible">
+        <div class="form-grid">
+          <div class="field form-full">
+            <label>Title</label>
+            <input id="f-title" value="${esc(card.title)}" placeholder="Give this card a name…">
+          </div>
+          <div class="field form-full">
+            <label>Command</label>
+            <input id="f-command" value="${esc(card.command)}" placeholder="e.g. docker ps -a" style="font-family:'JetBrains Mono','Fira Code',monospace;font-size:13px;">
+          </div>
+          <div class="field form-full">
+            <label>Description</label>
+            <textarea id="f-description" placeholder="What does this command do?">${esc(card.description)}</textarea>
+          </div>
+          <div class="field">
+            <label>Type / rarity</label>
+            <select id="f-type">
+              <option ${card.type==='Standard'?'selected':''}>Standard</option>
+              <option ${card.type==='Elevated'?'selected':''}>Elevated</option>
+              <option ${card.type==='Dangerous'?'selected':''}>Dangerous</option>
+              <option ${card.type==='Destructive'?'selected':''}>Destructive</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Tags</label>
+            <div class="tags-input-wrap">
+              <input id="f-tag-input" placeholder="Add tag, press Enter…">
+            </div>
+            <div class="tags-display" id="tagsDisplay"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="preview-title">Command preview</div>
+      <div class="cmd-block" id="cmdPreview">${esc(card.command) || '<span style="color:var(--text3)">No command yet…</span>'}</div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button class="btn" id="dupCardBtn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="8" height="8" rx="2"/><path d="M1 9V2a1 1 0 011-1h7"/></svg>
+        Duplicate
+      </button>
+      <button class="btn" id="moveUpBtn" ${idx===0?'disabled':''}>↑ Move up</button>
+      <button class="btn" id="moveDownBtn" ${idx===state.cards.length-1?'disabled':''}>↓ Move down</button>
+    </div>
+  `;
+
+  renderTags(card);
+  bindCardFields(card);
+}
+
+function renderTags(card) {
+  const display = document.getElementById('tagsDisplay');
+  if (!display) return;
+  display.innerHTML = '';
+  (card.tags || []).forEach(tag => {
+    const pill = document.createElement('span');
+    pill.className = 'tag-pill';
+    pill.innerHTML = `${esc(tag)}<button onclick="removeTag('${card.id}','${esc(tag)}')" title="Remove">×</button>`;
+    display.appendChild(pill);
+  });
+}
+
+function removeTag(cardId, tag) {
+  const card = state.cards.find(c => c.id === cardId);
+  if (card) { card.tags = card.tags.filter(t => t !== tag); renderTags(card); }
+}
+
+function bindCardFields(card) {
+  const bind = (id, key, transform) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      card[key] = transform ? transform(el.value) : el.value;
+      if (key === 'command') {
+        const p = document.getElementById('cmdPreview');
+        if (p) p.innerHTML = esc(card.command) || '<span style="color:var(--text3)">No command yet…</span>';
+      }
+      if (key === 'type') {
+        const m = TYPE_META[card.type] || TYPE_META.Standard;
+        const badge = document.querySelector('.type-badge');
+        if (badge) { badge.textContent = card.type; badge.style.background = m.bg; badge.style.color = m.color; }
+      }
+      renderSidebar();
+      updateHeader();
+    });
+  };
+  bind('f-title', 'title');
+  bind('f-command', 'command');
+  bind('f-description', 'description');
+  bind('f-type', 'type');
+
+  const tagInput = document.getElementById('f-tag-input');
+  if (tagInput) {
+    tagInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const val = tagInput.value.trim().replace(/,+$/, '');
+        if (val && !card.tags.includes(val)) { card.tags.push(val); renderTags(card); }
+        tagInput.value = '';
+      }
+    });
+  }
+
+  document.getElementById('deleteCardBtn')?.addEventListener('click', () => {
+    if (state.cards.length === 1) { showToast('You need at least one card.'); return; }
+    state.cards = state.cards.filter(c => c.id !== card.id);
+    state.activeCard = state.cards[0]?.id || null;
+    render();
+  });
+
+  document.getElementById('dupCardBtn')?.addEventListener('click', () => {
+    const clone = { ...card, id: uid(), title: card.title + ' (copy)', tags: [...card.tags] };
+    const idx = state.cards.indexOf(card);
+    state.cards.splice(idx + 1, 0, clone);
+    state.activeCard = clone.id;
+    render();
+  });
+
+  document.getElementById('moveUpBtn')?.addEventListener('click', () => {
+    const i = state.cards.indexOf(card);
+    if (i > 0) { [state.cards[i-1], state.cards[i]] = [state.cards[i], state.cards[i-1]]; render(); }
+  });
+
+  document.getElementById('moveDownBtn')?.addEventListener('click', () => {
+    const i = state.cards.indexOf(card);
+    if (i < state.cards.length-1) { [state.cards[i], state.cards[i+1]] = [state.cards[i+1], state.cards[i]]; render(); }
+  });
+}
+
+// ─── EVENTS ──────────────────────────────────────────────────────────────────
+function bindEvents() {
+  // Pack name
+  document.getElementById('packNameInput').addEventListener('input', e => {
+    state.name = e.target.value;
+    document.getElementById('sidebarNameDisplay').textContent = state.name;
+  });
+
+  // Colors
+  ['deckColor','deckCardBg','deckCardAccent'].forEach((id, i) => {
+    document.getElementById(id).addEventListener('input', e => {
+      if (i===0) state.color = e.target.value;
+      if (i===1) state.cardBg = e.target.value;
+      if (i===2) state.cardAccent = e.target.value;
+      updateSwatches();
+    });
+  });
+
+  // Add card
+  document.getElementById('addCardBtn').addEventListener('click', () => {
+    const card = { id: uid(), title: '', command: '', description: '', type: 'Standard', tags: [] };
+    state.cards.push(card);
+    state.activeCard = card.id;
+    render();
+    setTimeout(() => document.getElementById('f-title')?.focus(), 50);
+  });
+
+  // Export
+  document.getElementById('exportBtn').addEventListener('click', exportJSON);
+
+  // Import
+  document.getElementById('importBtn').addEventListener('click', () => {
+    document.getElementById('importOverlay').classList.add('show');
+    document.getElementById('importTextarea').value = '';
+    setTimeout(() => document.getElementById('importTextarea').focus(), 50);
+  });
+  document.getElementById('importCancelBtn').addEventListener('click', () => {
+    document.getElementById('importOverlay').classList.remove('show');
+  });
+  document.getElementById('importConfirmBtn').addEventListener('click', doImport);
+  document.getElementById('importOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('importOverlay')) document.getElementById('importOverlay').classList.remove('show');
+  });
+
+  // Icon picker
+  const iconBtn = document.getElementById('iconBtn');
+  const iconOverlay = document.getElementById('iconOverlay');
+  iconBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    iconOverlay.classList.toggle('show');
+  });
+  document.addEventListener('click', () => iconOverlay.classList.remove('show'));
+  iconOverlay.addEventListener('click', e => e.stopPropagation());
+
+  document.getElementById('customEmojiInput').addEventListener('input', e => {
+    const val = e.target.value.trim();
+    if (val) {
+      state.icon = val;
+      document.getElementById('iconDisplay').textContent = val;
+      document.getElementById('sidebarIconPreview').textContent = val;
+    }
+  });
+}
+
+function buildEmojiGrid() {
+  const grid = document.getElementById('emojiGrid');
+  EMOJIS.forEach(em => {
+    const btn = document.createElement('div');
+    btn.className = 'emoji-opt' + (em === state.icon ? ' selected' : '');
+    btn.textContent = em;
+    btn.addEventListener('click', () => {
+      state.icon = em;
+      document.getElementById('iconDisplay').textContent = em;
+      document.getElementById('sidebarIconPreview').textContent = em;
+      document.getElementById('customEmojiInput').value = '';
+      document.querySelectorAll('.emoji-opt').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('iconOverlay').classList.remove('show');
+    });
+    grid.appendChild(btn);
+  });
+}
+
+function toggleSection(head) {
+  head.classList.toggle('open');
+  const body = head.nextElementSibling;
+  body.classList.toggle('visible');
+}
+
+// ─── IMPORT / EXPORT ─────────────────────────────────────────────────────────
+function exportJSON() {
+  const name = (state.icon + ' ' + state.name).trim();
+  const out = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    deck: { name, color: state.color, cardBg: state.cardBg, cardAccent: state.cardAccent },
+    cards: state.cards.map(c => ({
+      title: c.title,
+      command: c.command,
+      description: c.description,
+      type: c.type,
+      tags: c.tags,
+    })),
+  };
+  const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name.replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-').toLowerCase() + '.json';
+  a.click();
+  showToast('Pack exported!');
+}
+
+function doImport() {
+  const raw = document.getElementById('importTextarea').value.trim();
+  let data;
+  try { data = JSON.parse(raw); } catch(e) { showToast('Invalid JSON — check formatting.'); return; }
+  if (!data.deck || !Array.isArray(data.cards)) { showToast('Missing deck or cards fields.'); return; }
+
+  // Parse icon from deck name
+  const match = data.deck.name?.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/u);
+  state.icon = match ? match[0] : '📦';
+  state.name = match ? data.deck.name.replace(match[0], '').trim() : (data.deck.name || 'Untitled');
+  state.color = data.deck.color || '#7eb8f7';
+  state.cardBg = data.deck.cardBg || '#1a2236';
+  state.cardAccent = data.deck.cardAccent || '#6ee7b7';
+  state.cards = data.cards.map(c => ({
+    id: uid(), title: c.title||'', command: c.command||'', description: c.description||'',
+    type: c.type||'Standard', tags: Array.isArray(c.tags) ? c.tags : [],
+  }));
+  state.activeCard = state.cards[0]?.id || null;
+
+  document.getElementById('importOverlay').classList.remove('show');
+  document.getElementById('customEmojiInput').value = '';
+  // refresh emoji grid selection
+  document.querySelectorAll('.emoji-opt').forEach(b => {
+    b.classList.toggle('selected', b.textContent === state.icon);
+  });
+  render();
+  showToast('Pack loaded — ' + state.cards.length + ' cards');
+}
+
+// ─── UTILS ───────────────────────────────────────────────────────────────────
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+init();
+</script>
+</body>
+</html>
