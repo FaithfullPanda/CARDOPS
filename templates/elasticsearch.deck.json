@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-08T13:32:11.286251Z",
+  "deck": {
+    "name": "🔎 Elasticsearch",
+    "color": "#8b5cf6",
+    "cardBg": "#1a2236",
+    "cardAccent": "#c4b5fd"
+  },
+  "cards": [
+    {
+      "title": "Cluster Health",
+      "command": "curl localhost:9200/_cluster/health?pretty",
+      "description": "Cluster status.",
+      "type": "Standard",
+      "tags": [
+        "elasticsearch"
+      ]
+    },
+    {
+      "title": "List Indices",
+      "command": "curl localhost:9200/_cat/indices?v",
+      "description": "Show indices.",
+      "type": "Standard",
+      "tags": [
+        "elasticsearch"
+      ]
+    },
+    {
+      "title": "Node Stats",
+      "command": "curl localhost:9200/_nodes/stats?pretty",
+      "description": "Node metrics.",
+      "type": "Standard",
+      "tags": [
+        "monitoring"
+      ]
+    },
+    {
+      "title": "Search",
+      "command": "curl localhost:9200/myindex/_search?pretty",
+      "description": "Search documents.",
+      "type": "Standard",
+      "tags": [
+        "search"
+      ]
+    },
+    {
+      "title": "Count Docs",
+      "command": "curl localhost:9200/myindex/_count?pretty",
+      "description": "Document count.",
+      "type": "Standard",
+      "tags": [
+        "search"
+      ]
+    },
+    {
+      "title": "Mappings",
+      "command": "curl localhost:9200/myindex/_mapping?pretty",
+      "description": "Index schema.",
+      "type": "Standard",
+      "tags": [
+        "schema"
+      ]
+    },
+    {
+      "title": "Settings",
+      "command": "curl localhost:9200/myindex/_settings?pretty",
+      "description": "Index settings.",
+      "type": "Standard",
+      "tags": [
+        "config"
+      ]
+    },
+    {
+      "title": "Shard Allocation",
+      "command": "curl localhost:9200/_cat/shards?v",
+      "description": "Shard placement.",
+      "type": "Standard",
+      "tags": [
+        "cluster"
+      ]
+    },
+    {
+      "title": "Pending Tasks",
+      "command": "curl localhost:9200/_cat/pending_tasks?v",
+      "description": "Pending tasks.",
+      "type": "Standard",
+      "tags": [
+        "cluster"
+      ]
+    },
+    {
+      "title": "Hot Threads",
+      "command": "curl localhost:9200/_nodes/hot_threads",
+      "description": "Busy threads.",
+      "type": "Elevated",
+      "tags": [
+        "debug"
+      ]
+    },
+    {
+      "title": "Refresh Index",
+      "command": "curl -X POST localhost:9200/myindex/_refresh",
+      "description": "Refresh index.",
+      "type": "Elevated",
+      "tags": [
+        "maintenance"
+      ]
+    },
+    {
+      "title": "Force Merge",
+      "command": "curl -X POST localhost:9200/myindex/_forcemerge",
+      "description": "Optimize segments.",
+      "type": "Elevated",
+      "tags": [
+        "maintenance"
+      ]
+    },
+    {
+      "title": "Delete Index",
+      "command": "curl -X DELETE localhost:9200/myindex",
+      "description": "Delete index.",
+      "type": "Dangerous",
+      "tags": [
+        "cleanup"
+      ]
+    },
+    {
+      "title": "Snapshot Status",
+      "command": "curl localhost:9200/_snapshot/_status?pretty",
+      "description": "Backup status.",
+      "type": "Standard",
+      "tags": [
+        "backup"
+      ]
+    },
+    {
+      "title": "Recovery Status",
+      "command": "curl localhost:9200/_cat/recovery?v",
+      "description": "Recovery info.",
+      "type": "Standard",
+      "tags": [
+        "recovery"
+      ]
+    }
+  ]
+}

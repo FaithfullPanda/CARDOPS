@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-08T13:32:11.286623Z",
+  "deck": {
+    "name": "📨 NATS",
+    "color": "#14b8a6",
+    "cardBg": "#1a2236",
+    "cardAccent": "#99f6e4"
+  },
+  "cards": [
+    {
+      "title": "Server Report",
+      "command": "nats server report",
+      "description": "Server overview.",
+      "type": "Standard",
+      "tags": [
+        "nats"
+      ]
+    },
+    {
+      "title": "Account Info",
+      "command": "nats account info",
+      "description": "Account details.",
+      "type": "Standard",
+      "tags": [
+        "nats"
+      ]
+    },
+    {
+      "title": "Subscribe",
+      "command": "nats sub events",
+      "description": "Subscribe subject.",
+      "type": "Standard",
+      "tags": [
+        "pubsub"
+      ]
+    },
+    {
+      "title": "Publish",
+      "command": "nats pub events 'hello'",
+      "description": "Publish message.",
+      "type": "Standard",
+      "tags": [
+        "pubsub"
+      ]
+    },
+    {
+      "title": "Request",
+      "command": "nats req api.ping ''",
+      "description": "Request/reply.",
+      "type": "Standard",
+      "tags": [
+        "rpc"
+      ]
+    },
+    {
+      "title": "Reply",
+      "command": "nats reply api.ping pong",
+      "description": "Reply service.",
+      "type": "Standard",
+      "tags": [
+        "rpc"
+      ]
+    },
+    {
+      "title": "Consumer List",
+      "command": "nats consumer ls ORDERS",
+      "description": "List consumers.",
+      "type": "Standard",
+      "tags": [
+        "jetstream"
+      ]
+    },
+    {
+      "title": "Stream List",
+      "command": "nats stream ls",
+      "description": "List streams.",
+      "type": "Standard",
+      "tags": [
+        "jetstream"
+      ]
+    },
+    {
+      "title": "Stream Info",
+      "command": "nats stream info ORDERS",
+      "description": "Stream details.",
+      "type": "Standard",
+      "tags": [
+        "jetstream"
+      ]
+    },
+    {
+      "title": "Consumer Info",
+      "command": "nats consumer info ORDERS app",
+      "description": "Consumer details.",
+      "type": "Standard",
+      "tags": [
+        "jetstream"
+      ]
+    },
+    {
+      "title": "Stream Purge",
+      "command": "nats stream purge ORDERS",
+      "description": "Delete messages.",
+      "type": "Dangerous",
+      "tags": [
+        "jetstream"
+      ]
+    },
+    {
+      "title": "Stream Delete",
+      "command": "nats stream rm ORDERS",
+      "description": "Delete stream.",
+      "type": "Destructive",
+      "tags": [
+        "jetstream"
+      ]
+    },
+    {
+      "title": "Bench Publish",
+      "command": "nats bench pub test",
+      "description": "Performance test.",
+      "type": "Elevated",
+      "tags": [
+        "benchmark"
+      ]
+    },
+    {
+      "title": "Bench Subscribe",
+      "command": "nats bench sub test",
+      "description": "Subscriber benchmark.",
+      "type": "Elevated",
+      "tags": [
+        "benchmark"
+      ]
+    },
+    {
+      "title": "Latency Check",
+      "command": "nats latency",
+      "description": "Measure latency.",
+      "type": "Standard",
+      "tags": [
+        "monitoring"
+      ]
+    }
+  ]
+}

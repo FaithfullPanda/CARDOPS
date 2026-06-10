@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-08T13:32:11.284714Z",
+  "deck": {
+    "name": "🐧 Linux CLI",
+    "color": "#f59e0b",
+    "cardBg": "#1a2236",
+    "cardAccent": "#fde68a"
+  },
+  "cards": [
+    {
+      "title": "List Files",
+      "command": "ls -lah",
+      "description": "Detailed listing.",
+      "type": "Standard",
+      "tags": [
+        "linux",
+        "files"
+      ]
+    },
+    {
+      "title": "Disk Usage",
+      "command": "df -h",
+      "description": "Filesystem usage.",
+      "type": "Standard",
+      "tags": [
+        "linux",
+        "storage"
+      ]
+    },
+    {
+      "title": "Directory Size",
+      "command": "du -sh *",
+      "description": "Folder sizes.",
+      "type": "Standard",
+      "tags": [
+        "linux",
+        "storage"
+      ]
+    },
+    {
+      "title": "Find File",
+      "command": "find / -name file.txt 2>/dev/null",
+      "description": "Search file.",
+      "type": "Standard",
+      "tags": [
+        "linux",
+        "find"
+      ]
+    },
+    {
+      "title": "Search Text",
+      "command": "grep -R 'pattern' .",
+      "description": "Recursive search.",
+      "type": "Standard",
+      "tags": [
+        "linux",
+        "text"
+      ]
+    },
+    {
+      "title": "Running Processes",
+      "command": "ps aux",
+      "description": "List processes.",
+      "type": "Standard",
+      "tags": [
+        "linux",
+        "process"
+      ]
+    },
+    {
+      "title": "Process Tree",
+      "command": "pstree -p",
+      "description": "Show hierarchy.",
+      "type": "Standard",
+      "tags": [
+        "linux",
+        "process"
+      ]
+    },
+    {
+      "title": "Open Ports",
+      "command": "ss -tulpn",
+      "description": "Listening ports.",
+      "type": "Elevated",
+      "tags": [
+        "linux",
+        "network"
+      ]
+    },
+    {
+      "title": "Systemd Status",
+      "command": "systemctl status nginx",
+      "description": "Service status.",
+      "type": "Standard",
+      "tags": [
+        "linux",
+        "systemd"
+      ]
+    },
+    {
+      "title": "Restart Service",
+      "command": "systemctl restart nginx",
+      "description": "Restart service.",
+      "type": "Elevated",
+      "tags": [
+        "linux",
+        "systemd"
+      ]
+    },
+    {
+      "title": "Logs",
+      "command": "journalctl -xe",
+      "description": "Recent logs.",
+      "type": "Elevated",
+      "tags": [
+        "linux",
+        "logs"
+      ]
+    },
+    {
+      "title": "Who Logged In",
+      "command": "who",
+      "description": "Logged users.",
+      "type": "Standard",
+      "tags": [
+        "linux",
+        "users"
+      ]
+    },
+    {
+      "title": "File Ownership",
+      "command": "chown user:group file",
+      "description": "Change owner.",
+      "type": "Elevated",
+      "tags": [
+        "linux",
+        "files"
+      ]
+    },
+    {
+      "title": "Permissions",
+      "command": "chmod 755 file",
+      "description": "Change permissions.",
+      "type": "Elevated",
+      "tags": [
+        "linux",
+        "files"
+      ]
+    },
+    {
+      "title": "Kill Process",
+      "command": "kill -9 <pid>",
+      "description": "Force stop process.",
+      "type": "Dangerous",
+      "tags": [
+        "linux",
+        "process"
+      ]
+    }
+  ]
+}

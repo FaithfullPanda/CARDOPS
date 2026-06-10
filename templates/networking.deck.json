@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-08T13:32:11.285295Z",
+  "deck": {
+    "name": "🌐 Networking",
+    "color": "#22c55e",
+    "cardBg": "#1a2236",
+    "cardAccent": "#86efac"
+  },
+  "cards": [
+    {
+      "title": "IP Address",
+      "command": "ip addr",
+      "description": "Show interfaces.",
+      "type": "Standard",
+      "tags": [
+        "network"
+      ]
+    },
+    {
+      "title": "Routing Table",
+      "command": "ip route",
+      "description": "Show routes.",
+      "type": "Standard",
+      "tags": [
+        "network"
+      ]
+    },
+    {
+      "title": "Ping Host",
+      "command": "ping 8.8.8.8",
+      "description": "Connectivity test.",
+      "type": "Standard",
+      "tags": [
+        "network"
+      ]
+    },
+    {
+      "title": "DNS Lookup",
+      "command": "dig example.com",
+      "description": "DNS query.",
+      "type": "Standard",
+      "tags": [
+        "dns"
+      ]
+    },
+    {
+      "title": "NS Lookup",
+      "command": "nslookup example.com",
+      "description": "DNS query.",
+      "type": "Standard",
+      "tags": [
+        "dns"
+      ]
+    },
+    {
+      "title": "Trace Route",
+      "command": "traceroute example.com",
+      "description": "Path analysis.",
+      "type": "Standard",
+      "tags": [
+        "network"
+      ]
+    },
+    {
+      "title": "TCP Connections",
+      "command": "ss -ant",
+      "description": "Active TCP sessions.",
+      "type": "Standard",
+      "tags": [
+        "network"
+      ]
+    },
+    {
+      "title": "ARP Cache",
+      "command": "ip neigh",
+      "description": "ARP entries.",
+      "type": "Standard",
+      "tags": [
+        "network"
+      ]
+    },
+    {
+      "title": "Packet Capture",
+      "command": "tcpdump -i eth0",
+      "description": "Capture packets.",
+      "type": "Elevated",
+      "tags": [
+        "network",
+        "debug"
+      ]
+    },
+    {
+      "title": "Port Scan",
+      "command": "nmap 10.0.0.1",
+      "description": "Scan host.",
+      "type": "Elevated",
+      "tags": [
+        "network",
+        "security"
+      ]
+    },
+    {
+      "title": "Check HTTP",
+      "command": "curl -I https://example.com",
+      "description": "HTTP headers.",
+      "type": "Standard",
+      "tags": [
+        "http"
+      ]
+    },
+    {
+      "title": "Download URL",
+      "command": "wget https://example.com/file",
+      "description": "Download file.",
+      "type": "Standard",
+      "tags": [
+        "http"
+      ]
+    },
+    {
+      "title": "Firewall Rules",
+      "command": "iptables -L -n",
+      "description": "List firewall rules.",
+      "type": "Elevated",
+      "tags": [
+        "firewall"
+      ]
+    },
+    {
+      "title": "Flush DNS Cache",
+      "command": "systemd-resolve --flush-caches",
+      "description": "Clear cache.",
+      "type": "Elevated",
+      "tags": [
+        "dns"
+      ]
+    },
+    {
+      "title": "Delete Route",
+      "command": "ip route del default",
+      "description": "Remove route.",
+      "type": "Dangerous",
+      "tags": [
+        "network",
+        "routing"
+      ]
+    }
+  ]
+}

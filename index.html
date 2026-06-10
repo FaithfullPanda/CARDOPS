@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CardOps</title>
+  <link rel="icon" type="image/png" href="./pictures/cardops_tr.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="stylesv4.css" />
+</head>
+<body>
+
+  <!-- ── TOPBAR ── -->
+  <header class="topbar">
+    <div class="brand">
+      <img src="./pictures/cardops_tr.png" alt="MiniCommand" class="brand-icon" />
+      CardOps
+    </div>
+
+    <nav class="topbar-actions">
+      <button class="top-btn" onclick="exportDB()">↓ Full Export</button>
+      <button class="top-btn" onclick="importDB()">↑ Full Import</button>
+      <!--<button class="top-btn" onclick="openCustomizeModal()">🎨 Customize</button>-->
+      <button class="top-btn" onclick="exportDeckCode()">📦 Export Deck</button>
+      <button class="top-btn" onclick="importDeckCode()">📥 Import Deck</button>
+      <button class="top-btn primary" id="add-cmd-btn" onclick="openCmdModal()" disabled>✦ Add Command</button>
+    </nav>
+  </header>
+
+  <!-- ── LAYOUT ── -->
+  <div class="layout">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+      <div class="sidebar-head">Decks</div>
+      <div class="shelf" id="shelf"></div>
+      <div class="sidebar-footer">
+        <button class="new-deck-btn" onclick="openDeckModal()">＋ New Deck</button>
+      </div>
+    </aside>
+
+    <!-- ── STAGE ── -->
+    <main class="stage">
+      <div class="stage-header">
+        <button class="top-btn" onclick="renderPortfolio()">← Decks</button>
+        <span class="stage-title" id="stage-title">Select a Deck</span>
+        <input
+          id="command-search"
+          class="search-input"
+          placeholder="Search commands, tags, descriptions…"
+        />
+        <select id="card-sort" class="sort-select">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="title">Title A-Z</option>
+          <option value="mostused">Most Used</option>
+          <option value="manual">Manual Order</option>
+          <option value="elevation">Elevation Level</option>
+        </select>
+        <span class="stage-sub" id="stage-sub"></span>
+        <div class="view-toggle" id="view-toggle">
+          <button class="view-btn active" id="btn-hand" onclick="setView('hand')" title="Fan view">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="5" width="4" height="9" rx="1.5" fill="currentColor" opacity=".5"/><rect x="6" y="3" width="4" height="11" rx="1.5" fill="currentColor" opacity=".75"/><rect x="11" y="5" width="4" height="9" rx="1.5" fill="currentColor" opacity=".5"/></svg>
+            Hand
+          </button>
+          <button class="view-btn" id="btn-grid" onclick="setView('grid')" title="Grid view">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor"/></svg>
+            Grid
+          </button>
+        </div>
+      </div>
+
+      <div class="hand-wrap" id="hand-wrap">
+        <div class="empty">
+          <div class="empty-sigil">⚔</div>
+          <div class="empty-title">No Deck selected</div>
+          <div class="empty-sub">Choose a Deck from the shelf</div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ── MODAL: New Command ── -->
+  <div class="overlay" id="cmd-modal">
+    <div class="modal">
+      <div class="modal-title">✦ New Command</div>
+      <div class="field">
+        <label for="c-title">Title</label>
+        <input id="c-title" placeholder="e.g. Deploy Production" />
+      </div>
+      <div class="field">
+        <label for="c-cmd">Command</label>
+        <textarea id="c-cmd" placeholder="Your command here…"></textarea>
+      </div>
+      <div class="field">
+        <label for="c-description">Description</label>
+        <textarea id="c-description" placeholder="Describe this command…"></textarea>
+      </div>
+      <div class="field">
+        <label for="c-tags">Tags</label>
+        <input id="c-tags" placeholder="docker, k8s, aws" />
+      </div>
+      <div class="field">
+        <label>Type</label>
+        <div class="type-grid">
+          <span class="type-opt sel" data-t="Standard"      onclick="pickType(this)">Standard</span>
+          <span class="type-opt"     data-t="Elevated"      onclick="pickType(this)">Elevated</span>
+          <span class="type-opt"     data-t="Dangerous"     onclick="pickType(this)">Dangerous</span>
+          <span class="type-opt"     data-t="Destructive"   onclick="pickType(this)">Destructive</span>
+          <span class="type-opt"     data-t="Restricted"    onclick="pickType(this)">Restricted</span>
+          <span class="type-opt"     data-t="Administrator" onclick="pickType(this)">Administrator</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeCmdModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveCmd()">⚡ Add Spell</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: Edit Command ── -->
+  <div class="overlay" id="edit-cmd-modal">
+    <div class="modal">
+      <div class="modal-title">✎ Edit Command</div>
+      <div class="field">
+        <label for="e-title">Title</label>
+        <input id="e-title" />
+      </div>
+      <div class="field">
+        <label for="e-cmd">Command</label>
+        <textarea id="e-cmd"></textarea>
+      </div>
+      <div class="field">
+        <label for="e-description">Description</label>
+        <textarea id="e-description"></textarea>
+      </div>
+      <div class="field">
+        <label for="e-tags">Tags</label>
+        <input id="e-tags" />
+      </div>
+      <div class="field">
+        <label>Type</label>
+        <div class="type-grid">
+          <span class="type-opt sel" data-t="Standard"      onclick="pickType(this)">Standard</span>
+          <span class="type-opt"     data-t="Elevated"      onclick="pickType(this)">Elevated</span>
+          <span class="type-opt"     data-t="Dangerous"     onclick="pickType(this)">Dangerous</span>
+          <span class="type-opt"     data-t="Destructive"   onclick="pickType(this)">Destructive</span>
+          <span class="type-opt"     data-t="Restricted"    onclick="pickType(this)">Restricted</span>
+          <span class="type-opt"     data-t="Administrator" onclick="pickType(this)">Administrator</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeEditModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEditCmd()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: New Deck ── -->
+  <div class="overlay" id="deck-modal">
+    <div class="modal">
+      <div class="modal-title">◈ New Deck</div>
+      <div class="field">
+        <label for="d-name">Name</label>
+        <input id="d-name" placeholder="e.g. ⚙️ DevOps" />
+      </div>
+      <div class="field">
+        <label>Color</label>
+        <div class="color-grid" id="color-grid">
+          <span class="color-swatch sel" data-c="#7eb8f7" style="--swatch:#7eb8f7"></span>
+          <span class="color-swatch"     data-c="#6ee7b7" style="--swatch:#6ee7b7"></span>
+          <span class="color-swatch"     data-c="#e8c76a" style="--swatch:#e8c76a"></span>
+          <span class="color-swatch"     data-c="#c084fc" style="--swatch:#c084fc"></span>
+          <span class="color-swatch"     data-c="#f87171" style="--swatch:#f87171"></span>
+          <span class="color-swatch"     data-c="#fb923c" style="--swatch:#fb923c"></span>
+          <span class="color-swatch"     data-c="#34d399" style="--swatch:#34d399"></span>
+          <span class="color-swatch"     data-c="#f472b6" style="--swatch:#f472b6"></span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeDeckModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveDeck()">◈ Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: Customize ── -->
+  <div class="overlay" id="customize-modal">
+    <div class="modal">
+      <div class="modal-title">🎨 Customize</div>
+      <div class="field">
+        <label for="cust-deck-name">Deck Name</label>
+        <input id="cust-deck-name" />
+      </div>
+      <div class="field">
+        <label for="cust-deck-color">Deck Color</label>
+        <input id="cust-deck-color" type="color" value="#7eb8f7" />
+      </div>
+      <hr class="modal-divider" />
+      <div class="field">
+        <label for="cust-card-bg">Card Background</label>
+        <input id="cust-card-bg" type="color" value="#1a2236" />
+      </div>
+      <div class="field">
+        <label for="cust-card-accent">Card Accent</label>
+        <input id="cust-card-accent" type="color" value="#7eb8f7" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeCustomizeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveCustomization()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOASTS ── -->
+  <div class="toast-shelf" id="toasts"></div>
+
+  <script src="themes.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

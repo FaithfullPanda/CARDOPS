@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-08T12:00:00.000Z",
+  "deck": {
+    "name": "🐳 Docker Essentials",
+    "color": "#7eb8f7",
+    "cardBg": "#1a2236",
+    "cardAccent": "#6ee7b7"
+  },
+  "cards": [
+    {
+      "title": "List Running Containers",
+      "command": "docker ps",
+      "description": "Display all currently running containers.",
+      "type": "Standard",
+      "tags": ["docker", "containers"]
+    },
+    {
+      "title": "List All Containers",
+      "command": "docker ps -a",
+      "description": "Display running and stopped containers.",
+      "type": "Standard",
+      "tags": ["docker", "containers"]
+    },
+    {
+      "title": "View Logs",
+      "command": "docker logs -f <container>",
+      "description": "Stream logs from a container.",
+      "type": "Elevated",
+      "tags": ["docker", "logs", "debugging"]
+    },
+    {
+      "title": "Remove Container",
+      "command": "docker rm <container>",
+      "description": "Delete a stopped container.",
+      "type": "Dangerous",
+      "tags": ["docker", "cleanup"]
+    },
+    {
+      "title": "Remove Image",
+      "command": "docker rmi <image>",
+      "description": "Delete a Docker image.",
+      "type": "Dangerous",
+      "tags": ["docker", "images"]
+    },
+    {
+      "title": "Prune Everything",
+      "command": "docker system prune -a",
+      "description": "Remove unused containers, images, networks and cache.",
+      "type": "Destructive",
+      "tags": ["docker", "cleanup", "maintenance"]
+    },
+    {
+      "title": "Build Image",
+      "command": "docker build -t myapp .",
+      "description": "Build an image from the current directory.",
+      "type": "Standard",
+      "tags": ["docker", "build"]
+    },
+    {
+      "title": "Run Container",
+      "command": "docker run -d -p 8080:80 nginx",
+      "description": "Run nginx in detached mode.",
+      "type": "Standard",
+      "tags": ["docker", "run"]
+    }
+  ]
+}

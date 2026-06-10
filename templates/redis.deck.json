@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-08T13:32:11.285789Z",
+  "deck": {
+    "name": "🔴 Redis",
+    "color": "#ef4444",
+    "cardBg": "#1a2236",
+    "cardAccent": "#fca5a5"
+  },
+  "cards": [
+    {
+      "title": "Ping",
+      "command": "PING",
+      "description": "Check server.",
+      "type": "Standard",
+      "tags": [
+        "redis"
+      ]
+    },
+    {
+      "title": "Server Info",
+      "command": "INFO",
+      "description": "Server statistics.",
+      "type": "Standard",
+      "tags": [
+        "redis",
+        "monitoring"
+      ]
+    },
+    {
+      "title": "List Keys",
+      "command": "SCAN 0",
+      "description": "Iterate keys.",
+      "type": "Standard",
+      "tags": [
+        "redis"
+      ]
+    },
+    {
+      "title": "Get Value",
+      "command": "GET mykey",
+      "description": "Read value.",
+      "type": "Standard",
+      "tags": [
+        "redis"
+      ]
+    },
+    {
+      "title": "Set Value",
+      "command": "SET mykey value",
+      "description": "Write value.",
+      "type": "Standard",
+      "tags": [
+        "redis"
+      ]
+    },
+    {
+      "title": "TTL",
+      "command": "TTL mykey",
+      "description": "Remaining lifetime.",
+      "type": "Standard",
+      "tags": [
+        "redis"
+      ]
+    },
+    {
+      "title": "Expire Key",
+      "command": "EXPIRE mykey 3600",
+      "description": "Set expiration.",
+      "type": "Standard",
+      "tags": [
+        "redis"
+      ]
+    },
+    {
+      "title": "Memory Usage",
+      "command": "MEMORY USAGE mykey",
+      "description": "Key memory usage.",
+      "type": "Standard",
+      "tags": [
+        "redis",
+        "performance"
+      ]
+    },
+    {
+      "title": "Slowlog",
+      "command": "SLOWLOG GET",
+      "description": "Slow queries.",
+      "type": "Elevated",
+      "tags": [
+        "redis",
+        "debug"
+      ]
+    },
+    {
+      "title": "Monitor",
+      "command": "MONITOR",
+      "description": "Live command stream.",
+      "type": "Elevated",
+      "tags": [
+        "redis",
+        "debug"
+      ]
+    },
+    {
+      "title": "Client List",
+      "command": "CLIENT LIST",
+      "description": "Connected clients.",
+      "type": "Standard",
+      "tags": [
+        "redis"
+      ]
+    },
+    {
+      "title": "Save DB",
+      "command": "BGSAVE",
+      "description": "Background snapshot.",
+      "type": "Elevated",
+      "tags": [
+        "redis",
+        "backup"
+      ]
+    },
+    {
+      "title": "Flush DB",
+      "command": "FLUSHDB",
+      "description": "Delete current DB.",
+      "type": "Dangerous",
+      "tags": [
+        "redis",
+        "cleanup"
+      ]
+    },
+    {
+      "title": "Flush All",
+      "command": "FLUSHALL",
+      "description": "Delete everything.",
+      "type": "Destructive",
+      "tags": [
+        "redis",
+        "cleanup"
+      ]
+    },
+    {
+      "title": "Replication Info",
+      "command": "INFO replication",
+      "description": "Replication status.",
+      "type": "Standard",
+      "tags": [
+        "redis",
+        "replication"
+      ]
+    }
+  ]
+}

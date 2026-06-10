@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-08T13:32:11.283848Z",
+  "deck": {
+    "name": "🦭 MariaDB Essentials",
+    "color": "#0ea5e9",
+    "cardBg": "#1a2236",
+    "cardAccent": "#93c5fd"
+  },
+  "cards": [
+    {
+      "title": "Show Databases",
+      "command": "SHOW DATABASES;",
+      "description": "List all databases.",
+      "type": "Standard",
+      "tags": [
+        "mariadb",
+        "database"
+      ]
+    },
+    {
+      "title": "Use Database",
+      "command": "USE mydb;",
+      "description": "Select a database.",
+      "type": "Standard",
+      "tags": [
+        "mariadb"
+      ]
+    },
+    {
+      "title": "Show Tables",
+      "command": "SHOW TABLES;",
+      "description": "List tables.",
+      "type": "Standard",
+      "tags": [
+        "mariadb"
+      ]
+    },
+    {
+      "title": "Describe Table",
+      "command": "DESCRIBE users;",
+      "description": "Show table structure.",
+      "type": "Standard",
+      "tags": [
+        "mariadb",
+        "schema"
+      ]
+    },
+    {
+      "title": "Show Processlist",
+      "command": "SHOW PROCESSLIST;",
+      "description": "View active sessions.",
+      "type": "Elevated",
+      "tags": [
+        "mariadb",
+        "monitoring"
+      ]
+    },
+    {
+      "title": "Show Variables",
+      "command": "SHOW VARIABLES;",
+      "description": "Display server variables.",
+      "type": "Standard",
+      "tags": [
+        "mariadb",
+        "config"
+      ]
+    },
+    {
+      "title": "Create User",
+      "command": "CREATE USER 'user'@'%' IDENTIFIED BY 'password';",
+      "description": "Create a user.",
+      "type": "Elevated",
+      "tags": [
+        "mariadb",
+        "security"
+      ]
+    },
+    {
+      "title": "Grant Privileges",
+      "command": "GRANT ALL PRIVILEGES ON mydb.* TO 'user'@'%';",
+      "description": "Grant permissions.",
+      "type": "Elevated",
+      "tags": [
+        "mariadb",
+        "security"
+      ]
+    },
+    {
+      "title": "Flush Privileges",
+      "command": "FLUSH PRIVILEGES;",
+      "description": "Reload grants.",
+      "type": "Elevated",
+      "tags": [
+        "mariadb",
+        "security"
+      ]
+    },
+    {
+      "title": "Backup Database",
+      "command": "mysqldump -u root -p mydb > backup.sql",
+      "description": "Create backup.",
+      "type": "Elevated",
+      "tags": [
+        "mariadb",
+        "backup"
+      ]
+    },
+    {
+      "title": "Restore Database",
+      "command": "mysql -u root -p mydb < backup.sql",
+      "description": "Restore backup.",
+      "type": "Elevated",
+      "tags": [
+        "mariadb",
+        "backup"
+      ]
+    },
+    {
+      "title": "Show Indexes",
+      "command": "SHOW INDEX FROM users;",
+      "description": "List indexes.",
+      "type": "Standard",
+      "tags": [
+        "mariadb",
+        "performance"
+      ]
+    },
+    {
+      "title": "Analyze Table",
+      "command": "ANALYZE TABLE users;",
+      "description": "Update statistics.",
+      "type": "Elevated",
+      "tags": [
+        "mariadb",
+        "performance"
+      ]
+    },
+    {
+      "title": "Optimize Table",
+      "command": "OPTIMIZE TABLE users;",
+      "description": "Defragment table.",
+      "type": "Elevated",
+      "tags": [
+        "mariadb",
+        "maintenance"
+      ]
+    },
+    {
+      "title": "Drop Database",
+      "command": "DROP DATABASE mydb;",
+      "description": "Delete database.",
+      "type": "Destructive",
+      "tags": [
+        "mariadb",
+        "danger"
+      ]
+    }
+  ]
+}
