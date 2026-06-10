@@ -803,14 +803,13 @@ async function openBoosterPack(data) {
     <div class="pack-wrapper">
 
     <div
-      class="booster-pack"
-        id="booster-pack"
-       style="
-      background-image:url('${theme.image}');
-      box-shadow:
-        0 0 80px ${theme.glow};
-       "
-      >
+  class="booster-pack"
+  id="booster-pack"
+  style="
+    background-image:url('${theme.image}');
+    --pack-glow:${theme.glow};
+  "
+>
 
     <div class="booster-title">
       ${theme.label}
